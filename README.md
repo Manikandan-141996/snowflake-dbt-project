@@ -44,77 +44,87 @@ dim_bookings - Historical booking changes
 dim_hosts - Historical host profile changes
 dim_listings - Historical listing changes
 
-```plaintext
+
 ## 📁 Project Structure
 
+```
 AWS_DBT_Snowflake/
-├── README.md
-├── pyproject.toml
-├── main.py
-├── SourceData/
+├── README.md                           # This file
+├── pyproject.toml                      # Python dependencies
+├── main.py                             # Main execution script
+│
+├── SourceData/                         # Raw CSV data files
 │   ├── bookings.csv
 │   ├── hosts.csv
 │   └── listings.csv
-├── DDL/
-│   ├── ddl.sql
+│
+├── DDL/                                # Database schema definitions
+│   ├── ddl.sql                         # Table creation scripts
 │   └── resources.sql
-├── aws_dbt_snowflake_project/
-│   ├── dbt_project.yml
-│   ├── ExampleProfiles.yml
-│   ├── models/
-│   │   ├── sources/
-│   │   │   └── sources.yml
-│   │   ├── bronze/
-│   │   │   ├── bronze_bookings.sql
-│   │   │   ├── bronze_hosts.sql
-│   │   │   └── bronze_listings.sql
-│   │   ├── silver/
-│   │   │   ├── silver_bookings.sql
-│   │   │   ├── silver_hosts.sql
-│   │   │   └── silver_listings.sql
-│   │   ├── gold/
-│   │   │   ├── fact.sql
-│   │   │   ├── obt.sql
-│   │   │   └── ephemeral/
-│   │   │       ├── bookings.sql
-│   │   │       ├── hosts.sql
-│   │   │       └── listings.sql
-│   ├── macros/
-│   │   ├── generate_schema_name.sql
-│   │   ├── multiply.sql
-│   │   ├── tag.sql
-│   │   └── trimmer.sql
-│   ├── analyses/
-│   │   ├── explore.sql
-│   │   ├── if_else.sql
-│   │   └── loop.sql
-│   ├── snapshots/
-│   │   ├── dim_bookings.yml
-│   │   ├── dim_hosts.yml
-│   │   └── dim_listings.yml
-│   ├── tests/
-│   │   └── source_tests.sql
-│   └── seeds/
+│
+└── aws_dbt_snowflake_project/         # Main dbt project
+    ├── dbt_project.yml                 # dbt project configuration
+    ├── ExampleProfiles.yml             # Snowflake connection profile
+    │
+    ├── models/                         # dbt models
+    │   ├── sources/
+    │   │   └── sources.yml             # Source definitions
+    │   ├── bronze/                     # Raw data layer
+    │   │   ├── bronze_bookings.sql
+    │   │   ├── bronze_hosts.sql
+    │   │   └── bronze_listings.sql
+    │   ├── silver/                     # Cleaned data layer
+    │   │   ├── silver_bookings.sql
+    │   │   ├── silver_hosts.sql
+    │   │   └── silver_listings.sql
+    │   └── gold/                       # Analytics layer
+    │       ├── fact.sql
+    │       ├── obt.sql
+    │       └── ephemeral/              # Temporary models
+    │           ├── bookings.sql
+    │           ├── hosts.sql
+    │           └── listings.sql
+    │
+    ├── macros/                         # Reusable SQL functions
+    │   ├── generate_schema_name.sql    # Custom schema naming
+    │   ├── multiply.sql                # Math operations
+    │   ├── tag.sql                     # Categorization logic
+    │   └── trimmer.sql                 # String utilities
+    │
+    ├── analyses/                       # Ad-hoc analysis queries
+    │   ├── explore.sql
+    │   ├── if_else.sql
+    │   └── loop.sql
+    │
+    ├── snapshots/                      # SCD Type 2 configurations
+    │   ├── dim_bookings.yml
+    │   ├── dim_hosts.yml
+    │   └── dim_listings.yml
+    │
+    ├── tests/                          # Data quality tests
+    │   └── source_tests.sql
+    │
+    └── seeds/                          # Static reference data
+```
 
-```plaintext
-
-**Configuration of Snowflake Connection**
-
-Create ~/.dbt/profiles.yml:
-
-aws_dbt_snowflake_project:
-  outputs:
-    dev:
-      account: <your-account-identifier>
-      database: AIRBNB
-      password: <your-password>
-      role: ACCOUNTADMIN
-      schema: dbt_schema
-      threads: 4
-      type: snowflake
-      user: <your-username>
-      warehouse: COMPUTE_WH
-  target: dev
+ **Configure Snowflake Connection**
+   
+   Create `~/.dbt/profiles.yml`:
+   ```yaml
+   aws_dbt_snowflake_project:
+     outputs:
+       dev:
+         account: <your-account-identifier>
+         database: AIRBNB
+         password: <your-password>
+         role: ACCOUNTADMIN
+         schema: dbt_schema
+         threads: 4
+         type: snowflake
+         user: <your-username>
+         warehouse: COMPUTE_WH
+     target: dev
+   ```
 
   🎯 Key Features
 **1. Incremental Loading**
