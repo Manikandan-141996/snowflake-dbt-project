@@ -44,65 +44,57 @@ dim_bookings - Historical booking changes
 dim_hosts - Historical host profile changes
 dim_listings - Historical listing changes
 
-📁 Project Structure
+```plaintext
+## 📁 Project Structure
 
 AWS_DBT_Snowflake/
-├── README.md                  # Project documentation
-├── pyproject.toml             # Python dependencies
-├── main.py                    # Main execution script
-
-├── SourceData/                # Raw CSV data files
+├── README.md
+├── pyproject.toml
+├── main.py
+├── SourceData/
 │   ├── bookings.csv
 │   ├── hosts.csv
 │   └── listings.csv
-
-├── DDL/                       # Database schema definitions
+├── DDL/
 │   ├── ddl.sql
 │   └── resources.sql
-
-├── aws_dbt_snowflake_project/ # Main dbt project
+├── aws_dbt_snowflake_project/
 │   ├── dbt_project.yml
-│   ├── ExampleProfiles.yml    # Snowflake connection profile
-│
+│   ├── ExampleProfiles.yml
 │   ├── models/
 │   │   ├── sources/
 │   │   │   └── sources.yml
-│   │   ├── bronze/            # Raw data layer
+│   │   ├── bronze/
 │   │   │   ├── bronze_bookings.sql
 │   │   │   ├── bronze_hosts.sql
 │   │   │   └── bronze_listings.sql
-│   │   ├── silver/            # Cleaned data layer
+│   │   ├── silver/
 │   │   │   ├── silver_bookings.sql
 │   │   │   ├── silver_hosts.sql
 │   │   │   └── silver_listings.sql
-│   │   ├── gold/              # Analytics layer
+│   │   ├── gold/
 │   │   │   ├── fact.sql
 │   │   │   ├── obt.sql
-│   │   │   └── ephemeral/     # Temporary models
+│   │   │   └── ephemeral/
 │   │   │       ├── bookings.sql
 │   │   │       ├── hosts.sql
 │   │   │       └── listings.sql
-│
-│   ├── macros/                # Reusable SQL logic
+│   ├── macros/
 │   │   ├── generate_schema_name.sql
 │   │   ├── multiply.sql
 │   │   ├── tag.sql
 │   │   └── trimmer.sql
-│
-│   ├── analyses/              # Ad-hoc queries
+│   ├── analyses/
 │   │   ├── explore.sql
 │   │   ├── if_else.sql
 │   │   └── loop.sql
-│
-│   ├── snapshots/             # SCD Type 2 configs
+│   ├── snapshots/
 │   │   ├── dim_bookings.yml
 │   │   ├── dim_hosts.yml
 │   │   └── dim_listings.yml
-│
-│   ├── tests/                 # Data quality tests
+│   ├── tests/
 │   │   └── source_tests.sql
-│
-│   └── seeds/                 # Static reference data
+│   └── seeds/
 
 **Configuration of Snowflake Connection**
 
