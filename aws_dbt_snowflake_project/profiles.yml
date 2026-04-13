@@ -1,0 +1,25 @@
+aws_dbt_snowflake_project:
+  outputs:
+    dev:
+      account: CBCUHVX-UEB61172
+      database: AIRBNB
+      password: Karthickmani@1996
+      role: SYSADMIN
+      schema: dbt_schema
+      threads: 1
+      type: snowflake
+      user: MANIKANDAN5008
+      warehouse: COMPUTE_WH
+  target: dev
+my_dbt_profile:
+  outputs:
+    dev:
+      account: qa81606.central-india.azure
+      database: DBT_PROJECT
+      password: '1234567890'
+      role: ACCOUNTADMIN
+      schema: PUBLIC
+      type: snowflake
+      user: qa81606.central-india.azure
+      warehouse: MY_LARGEWH
+  target: dev
