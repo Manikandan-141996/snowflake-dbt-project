@@ -96,6 +96,8 @@ AWS_DBT_Snowflake/
 │   │   └── source_tests.sql
 │   └── seeds/
 
+```plaintext
+
 **Configuration of Snowflake Connection**
 
 Create ~/.dbt/profiles.yml:
