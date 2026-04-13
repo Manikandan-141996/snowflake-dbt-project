@@ -126,55 +126,54 @@ AWS_DBT_Snowflake/
      target: dev
    ```
 
-  🎯 Key Features
-**1. Incremental Loading**
-Bronze and silver models use incremental materialization to process only new/changed data:
+  ## 🎯 Key Features
 
+### 1. Incremental Loading
+Bronze and silver models use incremental materialization to process only new/changed data:
+```sql
 {{ config(materialized='incremental') }}
 {% if is_incremental() %}
     WHERE CREATED_AT > (SELECT COALESCE(MAX(CREATED_AT), '1900-01-01') FROM {{ this }})
 {% endif %}
+```
 
-**2. Custom Macros**
+### 2. Custom Macros
 Reusable business logic:
+- **`tag()` macro**: Categorizes prices into 'low', 'medium', 'high'
+  ```sql
+  {{ tag('CAST(PRICE_PER_NIGHT AS INT)') }} AS PRICE_PER_NIGHT_TAG
+  ```
 
-tag() macro: Categorizes prices into 'low', 'medium', 'high'
-{{ tag('CAST(PRICE_PER_NIGHT AS INT)') }} AS PRICE_PER_NIGHT_TAG
-
-**3. Dynamic SQL Generation**
+### 3. Dynamic SQL Generation
 The OBT (One Big Table) model uses Jinja loops for maintainable joins:
-
+```sql
 {% set configs = [...] %}
 SELECT {% for config in configs %}...{% endfor %}
+```
 
-**4. Slowly Changing Dimensions**
+### 4. Slowly Changing Dimensions
 Track historical changes with timestamp-based snapshots:
+- Valid from/to dates automatically maintained
+- Historical data preserved for point-in-time analysis
 
-Valid from/to dates automatically maintained
-Historical data preserved for point-in-time analysis
-
-**5. Schema Organization**
+### 5. Schema Organization
 Automatic schema separation by layer:
+- Bronze models → `AIRBNB.BRONZE.*`
+- Silver models → `AIRBNB.SILVER.*`
+- Gold models → `AIRBNB.GOLD.*`
 
-Bronze models → AIRBNB.BRONZE.*
-Silver models → AIRBNB.SILVER.*
-Gold models → AIRBNB.GOLD.*
+## 📈 Data Quality
 
-**📈 Data Quality**
+### Testing Strategy
+- Source data validation tests
+- Unique key constraints
+- Not null checks
+- Referential integrity tests
+- Custom business rule tests
 
-**Testing Strategy**
-
-Source data validation tests
-Unique key constraints
-Not null checks
-Referential integrity tests
-Custom business rule tests
-
-**Data Lineage**
-
+### Data Lineage
 dbt automatically tracks data lineage, showing:
-
-Upstream dependencies
-Downstream impacts
-Model relationships
-Source to consumption flow
+- Upstream dependencies
+- Downstream impacts
+- Model relationships
+- Source to consumption flow
